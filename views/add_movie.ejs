@@ -1,0 +1,69 @@
+
+<!DOCTYPE html> 
+<html> 
+      
+<head> 
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title> 
+        Home Page
+    </title> 
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/views/css/index.css">
+
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head> 
+  
+<body> 
+    <form>
+        <p>
+          <label>Movie Name:</label>
+          <input type="text" id="movie_name" name="movie_name">
+        </p>
+        <p>
+          <label>Description</label>
+          <input type="text" id="description" name="description">
+        </p>
+        <p>
+            <label>Direction:</label>
+            <input type="text" id="direction" name="direction">
+          </p>
+          <p>
+            <label>Duration:</label>
+            <input type="text" id="duration" name="duration">
+          </p>
+        <p>
+          <input id="button" type="button" value="Submit">
+        </p>
+      </form>
+</body>
+ <script>
+$("#button").click(function(e) {
+    e.preventDefault();
+    $.ajax({
+    url: "/add_movie",
+    type: 'POST',
+    data: JSON.stringify(
+           { 
+              "movie_name": $("#movie_name").val(),
+              "description": $("#description").val(),
+              "direction": $("#direction").val(),
+              "duration": $("#duration").val(),
+            }
+           ),
+        success: function(result) {
+            alert(result);
+            window.location.href ="/home";
+        },
+        error: function(result) {
+            alert('error');
+        }
+});
+});
+ </script>
+  
+</html> 

@@ -1,0 +1,99 @@
+
+<!DOCTYPE html> 
+<html> 
+      
+<head> 
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title> 
+        Home Page
+    </title> 
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/views/css/index.css">
+
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head> 
+  
+<body> 
+    <form>
+        
+        <div class="col-md-4" >
+            <label>Choose Movies</label>
+            <select id="movie" class="movies">
+            </select>
+        </div>
+        <p>
+            <label>Start Timing:</label>
+            <div class="form-group">
+              <label>Event Date and Time</label>
+              <input type="datetime-local" class="form-control" id="start" name="eventDateTime" value="<%=Proposal[0].eventDateTime%>">
+          </div>
+          </p>
+          <p>
+              <label>End Timing:</label>
+              <div class="form-group">
+                <label>Event Date and Time</label>
+                <input type="datetime-local" class="form-control" id="end" name="eventDateTime" value="<%=Proposal[0].eventDateTime%>">
+            </div>
+            </p>
+            <p>
+              <label>Ticket Price:</label>
+              <input type="text" id="price" name="duration">
+            </p>
+            <p>
+              <label>Total Tickets:</label>
+              <input type="text" id="total" name="duration">
+            </p>
+        <p>
+          <input id="button" type="submit" value="Submit">
+        </p>
+      </form>
+</body>
+
+<script>
+    function gettimings() {
+       $.ajax({
+         url: "/get_movies",
+         type: 'GET',
+          success: function(res) {
+           $.each(res.movies,function(i,item){
+               $('#movie').append(`<option value="${item}"> 
+                                  ${item} 
+                             </option>`); 
+           });
+       }      
+ }
+   
+
+$(document).ready(getmovies);
+$(window).load(getmovies);​
+$("#button").click(function(e) {
+    e.preventDefault();
+    $.ajax({
+        type: "post",
+        url: "/add_timing",
+        data: JSON.stringify(
+           { 
+               "movie" : $("#movie").val(),
+               "start" : $("#start").val(),
+               "end" : $("#end").val(),
+               "price" : $("#price").val(),
+               "total":$("#total").val()
+            }
+           ),
+        success: function(result) {
+            alert('ok');
+        },
+        error: function(result) {
+            alert('error');
+        }
+    });
+});
+
+</script>
+  
+</html> 

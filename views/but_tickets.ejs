@@ -1,0 +1,90 @@
+
+<!DOCTYPE html> 
+<html> 
+      
+<head> 
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title> 
+        Home Page
+    </title> 
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/views/css/index.css">
+
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head> 
+  
+<body> 
+    <form>
+        <div class="col-md-4" >
+            <label>Choose Movies</label>
+            <select id="movie" class="movies">
+            </select>
+        </div>
+        <div class="col-md-4" >
+            <label>Choose Timings</label>
+            <select id="timing" class="timing">
+            </select>
+        </div>
+        <p>
+            <label>Number of Tickets:</label>
+            <input id="ticket" type="text" name="duration">
+          </p>
+        <p>
+          <input id="button" type="submit" value="Submit">
+        </p>
+      </form>
+</body>
+
+<script>
+    function getmovies() {
+       $.ajax({
+         url:"/get_timings",
+         type: 'GET',
+          success: function(res) {
+           $.each(res.movies,function(i,item){
+               $('#movie').append(`<option value="${item[0]}"> 
+                                  ${item[0]} 
+                             </option>`); 
+               $('#timing').append(`<option value="${item[1]}"> 
+                                  ${item[1]} 
+                       </option>`); 
+
+           });
+       }      
+ }
+};
+
+$(document).ready(getmovies);
+$(window).load(getmovies);​
+
+$("#button").click(function(e) {
+    e.preventDefault();
+    $.ajax({
+        type: "post",
+        url: "/buy_ticket",
+        data: JSON.stringify(
+           { 
+               "movie" : $("#movie").val(),
+               "timing" : $("#timing").val(),
+               "ticket" : $("#ticket").val();
+            }
+           ),
+        success: function(result) {
+            alert('ok');
+        },
+        error: function(result) {
+            alert('error');
+        }
+    });
+});
+
+
+</script>
+ 
+  
+</html> 
